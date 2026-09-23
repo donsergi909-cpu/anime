@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>📸 Счётчик подписчиков @just.rs1706 — Live Instagram Tracker</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at 15% 15%, #fd1d1d 0%, #833ab4 45%, #405de6 90%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      overflow-x: hidden;
+      color: #fff;
+      padding: 20px 10px;
+    }
+
+    /* Ambient animated bubbles / hearts */
+    .ambient-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      bottom: -60px;
+      user-select: none;
+      animation: floatUp linear infinite;
+      opacity: 0.75;
+      filter: drop-shadow(0 0 6px rgba(255,255,255,0.4));
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(0.8) rotate(0deg); opacity: 0; }
+      15% { opacity: 0.8; }
+      90% { opacity: 0.8; }
+      100% { transform: translateY(-115vh) scale(1.2) rotate(360deg); opacity: 0; }
+    }
+
+    /* Main Card */
+    .card {
+      position: relative;
+      z-index: 1;
+      background: rgba(18, 18, 28, 0.65);
+      backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 32px;
+      padding: 38px 34px;
+      max-width: 520px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 35px 80px rgba(0, 0, 0, 0.55), inset 0 1px 1px rgba(255,255,255,0.25);
+      animation: popIn 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.92) translateY(20px); opacity: 0; }
+      100% { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    /* Avatar styling */
+    .avatar-wrapper {
+      position: relative;
+      width: 110px;
+      height: 110px;
+      margin: 0 auto 16px;
+    }
+
+    .avatar-ring {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: conic-gradient(#f09433, #e6683c, #dc2743, #cc2366, #bc1888, #f09433);
+      padding: 3.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: spinRing 8s linear infinite;
+    }
+
+    @keyframes spinRing {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+
+    .avatar-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: #111;
+      border: 3px solid #141421;
+      object-fit: cover;
+      display: block;
+    }
+
+    .live-badge {
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #e1306c;
+      color: #fff;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      box-shadow: 0 2px 10px rgba(225, 48, 108, 0.6);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .live-dot {
+      width: 6px;
+      height: 6px;
+      background: #fff;
+      border-radius: 50%;
+      animation: pulseDot 1.2s infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.6); }
+    }
+
+    /* Titles */
+    .username-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .username {
+      font-size: 1.55rem;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+      color: #fff;
+    }
+
+    .verified-icon {
+      width: 20px;
+      height: 20px;
+      fill: #0095f6;
+    }
+
+    .tagline {
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 0.9rem;
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    /* Counter Display Box */
+    .counter-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.02) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 22px;
+      padding: 24px 20px 20px;
+      margin: 22px 0 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+
+    .counter-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      padding: 0 8px;
+    }
+
+    .counter-label {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.8px;
+    }
+
+    .speed-badge {
+      font-size: 0.75rem;
+      background: rgba(76, 175, 80, 0.25);
+      border: 1px solid rgba(76, 175, 80, 0.5);
+      color: #79f280;
+      padding: 2px 9px;
+      border-radius: 12px;
+      font-weight: 600;
+    }
+
+    #counter {
+      font-size: 4.2rem;
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      line-height: 1.05;
+      color: #fff;
+      text-shadow: 0 0 35px rgba(255, 105, 180, 0.5);
+      font-variant-numeric: tabular-nums;
+      transition: transform 0.08s ease-out;
+    }
+
+    #counter.bump {
+      transform: scale(1.045);
+    }
+
+    .growth-info {
+      color: rgba(255, 255, 255, 0.65);
+      font-size: 0.82rem;
+      margin-top: 8px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    /* Quick Control Buttons */
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .control-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 16px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .control-btn:hover {
+      background: rgba(255, 255, 255, 0.22);
+      transform: translateY(-1px);
+    }
+
+    .control-btn.active {
+      background: #e1306c;
+      border-color: #e1306c;
+      font-weight: 700;
+      box-shadow: 0 0 12px rgba(225,48,108,0.5);
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .stat-tile {
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      padding: 12px 6px;
+    }
+
+    .stat-num {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .stat-title {
+      font-size: 0.72rem;
+      color: rgba(255, 255, 255, 0.6);
+      margin-top: 3px;
+    }
+
+    /* Joke ticker phrase */
+    .joke-box {
+      background: rgba(255, 255, 255, 0.08);
+      border-left: 3px solid #ff0077;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 0.92rem;
+      line-height: 1.45;
+      min-height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 22px;
+      transition: opacity 0.3s;
+    }
+
+    /* Main Follow CTA Button */
+    .cta-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 15px;
+      border-radius: 50px;
+      background: linear-gradient(90deg, #fd1d1d, #e1306c, #833ab4);
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      box-shadow: 0 10px 25px rgba(225, 48, 108, 0.45);
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 15px 35px rgba(225, 48, 108, 0.65);
+    }
+
+    .cta-btn:active {
+      transform: scale(0.98);
+    }
+
+    .footer-note {
+      font-size: 0.72rem;
+      color: rgba(255, 255, 255, 0.45);
+      margin-top: 18px;
+    }
+
+    /* Milestone toast popup */
+    #milestoneToast {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-100px);
+      background: rgba(20, 20, 30, 0.95);
+      border: 1px solid rgba(255, 215, 0, 0.5);
+      color: #ffd700;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 1000;
+      transition: transform 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+      pointer-events: none;
+    }
+
+    #milestoneToast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating particles background -->
+  <div class="ambient-bg" id="particles"></div>
+
+  <!-- Toast notification -->
+  <div id="milestoneToast">
+    <span id="toastIcon">🎉</span>
+    <span id="toastText">Новый рекорд!</span>
+  </div>
+
+  <!-- Card -->
+  <div class="card">
+    <!-- Avatar -->
+    <div class="avatar-wrapper">
+      <div class="avatar-ring">
+        <img class="avatar-img" src="insta_logo.jpg" alt="@just.rs1706" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=200&auto=format&fit=crop&q=80'" />
+      </div>
+      <div class="live-badge">
+        <div class="live-dot"></div> LIVE
+      </div>
+    </div>
+
+    <!-- Account Details -->
+    <div class="username-row">
+      <span class="username">@just.rs1706</span>
+      <!-- Instagram Verified SVG Badge -->
+      <svg class="verified-icon" viewBox="0 0 24 24">
+        <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-1.9 14.7l-4.2-4.2 1.4-1.4 2.8 2.8 6.8-6.8 1.4 1.4-8.2 8.2z"/>
+      </svg>
+    </div>
+    <div class="tagline">🔥 Самый стремительно растущий блог в Instagram!</div>
+
+    <!-- Main Live Counter Box -->
+    <div class="counter-card">
+      <div class="counter-top">
+        <span class="counter-label">ПОДПИСЧИКИ</span>
+        <span class="speed-badge" id="speedTag">🚀 +2.4 / сек</span>
+      </div>
+      
+      <div id="counter">1,337</div>
+
+      <div class="growth-info">
+        <span>⏱ Обновление в реальном времени</span>
+        <span>•</span>
+        <span id="todayGain">За сегодня: +14,290</span>
+      </div>
+    </div>
+
+    <!-- Speed Controls (Interactive Humor) -->
+    <div class="controls">
+      <button class="control-btn active" onclick="setMode('normal', this)">Нормальный</button>
+      <button class="control-btn" onclick="setMode('hype', this)">🔥 Турбо-Хайп</button>
+      <button class="control-btn" onclick="setMode('space', this)">🚀 В Космос</button>
+      <button class="control-btn" onclick="addOne()">+1 Подписка</button>
+    </div>
+
+    <!-- Extra Stats Grid -->
+    <div class="stats-grid">
+      <div class="stat-tile">
+        <div class="stat-num" id="statPosts">84</div>
+        <div class="stat-title">Публикаций</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-num" id="statLikes">42.8K</div>
+        <div class="stat-title">Лайков</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-num" id="statReach">180K</div>
+        <div class="stat-title">Охват</div>
+      </div>
+    </div>
+
+    <!-- Joke Quotes / Status -->
+    <div class="joke-box" id="jokeBox">
+      ⚡ Марк Цукерберг лично проверяет серверы из-за наплыва подписчиков к @just.rs1706!
+    </div>
+
+    <!-- Instagram Direct Link Button -->
+    <a href="https://www.instagram.com/just.rs1706?stkn=MTk1MXNxZzBqc3VoYQ==" target="_blank" class="cta-btn">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+      </svg>
+      Подписаться на @just.rs1706
+    </a>
+
+    <div class="footer-note">
+      * Шуточный интерактивный live-счётчик для фанатов @just.rs1706 😄
+    </div>
+  </div>
+
+  <script>
+    // Config state
+    let count = 2840;
+    let baseRate = 1.8;
+    let modeRateMultiplier = 1.0;
+    let todayStart = 12400;
+
+    const jokes = [
+      "⚡ Марк Цукерберг лично проверяет серверы из-за наплыва подписчиков!",
+      "📈 График роста аккаунта просто пробил монитор аналитиков!",
+      "😎 Голливудские продюсеры уже встали в очередь за автографом!",
+      "🔥 Кайли Дженнер и Криштиану Роналду нервно обновляют страницу @just.rs1706.",
+      "🚀 Серверы Instagram переведены в аварийный режим максимальной мощности!",
+      "💎 Очередной миллион уже не за горами, просто моргните!",
+      "🌍 ООН обсуждает объявление дня подписчика @just.rs1706 мировым праздником!"
+    ];
+
+    let jokeIndex = 0;
+    const jokeEl = document.getElementById("jokeBox");
+    const counterEl = document.getElementById("counter");
+    const speedTagEl = document.getElementById("speedTag");
+    const todayGainEl = document.getElementById("todayGain");
+    const statLikesEl = document.getElementById("statLikes");
+    const statReachEl = document.getElementById("statReach");
+
+    // Number format with commas
+    function formatNumber(num) {
+      return Math.floor(num).toLocaleString('ru-RU');
+    }
+
+    // Milestones definition
+    const milestones = [
+      { at: 3000, text: "🎉 3 000 подписчиков взято! Полёт отличный!" },
+      { at: 5000, text: "⭐ 5 000 легенд вместе с @just.rs1706!" },
+      { at: 10000, text: "👑 10K! Где официальная галочка?!" },
+      { at: 50000, text: "🚀 50K! Полный отрыв от конкурентов!" }
+    ];
+    let triggered = new Set();
+
+    function checkMilestone(val) {
+      for (const m of milestones) {
+        if (val >= m.at && !triggered.has(m.at)) {
+          triggered.add(m.at);
+          showToast(m.text);
+          triggerConfettiBurst();
+        }
+      }
+    }
+
+    function showToast(text) {
+      const toast = document.getElementById("milestoneToast");
+      const toastText = document.getElementById("toastText");
+      toastText.innerText = text;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 3800);
+    }
+
+    // Mode changer
+    function setMode(mode, btn) {
+      document.querySelectorAll('.control-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (mode === 'normal') modeRateMultiplier = 1.0;
+      if (mode === 'hype') modeRateMultiplier = 5.0;
+      if (mode === 'space') modeRateMultiplier = 25.0;
+    }
+
+    function addOne() {
+      count += 1;
+      bumpCounter();
+      checkMilestone(count);
+      updateDisplay();
+      createParticleAtCenter('💖');
+    }
+
+    function bumpCounter() {
+      counterEl.classList.remove('bump');
+      void counterEl.offsetWidth;
+      counterEl.classList.add('bump');
+    }
+
+    function updateDisplay() {
+      counterEl.textContent = formatNumber(count);
+      const currentRate = (baseRate * modeRateMultiplier).toFixed(1);
+      speedTagEl.textContent = `🚀 +${currentRate} / сек`;
+      
+      const gainedToday = Math.floor(todayStart + (count - 2840) * 4);
+      todayGainEl.textContent = `За сегодня: +${formatNumber(gainedToday)}`;
+
+      statLikesEl.textContent = formatNumber(count * 8.4);
+      statReachEl.textContent = formatNumber(count * 24.6);
+    }
+
+    // Main animation loop
+    let lastTime = performance.now();
+    function loop(time) {
+      const dt = (time - lastTime) / 1000;
+      lastTime = time;
+
+      const delta = (baseRate * modeRateMultiplier + (Math.random() - 0.4) * 0.5) * dt;
+      const prevInt = Math.floor(count);
+      count += Math.max(0.1 * dt, delta);
+      const newInt = Math.floor(count);
+
+      if (newInt !== prevInt) {
+        bumpCounter();
+        checkMilestone(newInt);
+      }
+
+      updateDisplay();
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+
+    // Joke phrase rotator
+    setInterval(() => {
+      jokeEl.style.opacity = 0;
+      setTimeout(() => {
+        jokeIndex = (jokeIndex + 1) % jokes.length;
+        jokeEl.textContent = jokes[jokeIndex];
+        jokeEl.style.opacity = 1;
+      }, 350);
+    }, 4500);
+
+    // Floating particles generator
+    const particlesContainer = document.getElementById("particles");
+    const symbols = ['❤️', '🔥', '✨', '⚡', '🌟', '💖', '👏', '🎯', '📸'];
+
+    function spawnParticle() {
+      const p = document.createElement("div");
+      p.className = "particle";
+      p.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      p.style.left = Math.random() * 98 + "vw";
+      const duration = 5 + Math.random() * 6;
+      p.style.animationDuration = duration + "s";
+      p.style.fontSize = (1 + Math.random() * 1.5) + "rem";
+      particlesContainer.appendChild(p);
+
+      setTimeout(() => p.remove(), duration * 1000);
+    }
+
+    for (let i = 0; i < 15; i++) {
+      setTimeout(spawnParticle, i * 250);
+    }
+    setInterval(spawnParticle, 700);
+
+    function createParticleAtCenter(sym) {
+      const p = document.createElement("div");
+      p.className = "particle";
+      p.textContent = sym;
+      p.style.left = "50vw";
+      p.style.bottom = "50vh";
+      p.style.fontSize = "2.5rem";
+      p.style.animationDuration = "2s";
+      particlesContainer.appendChild(p);
+      setTimeout(() => p.remove(), 2000);
+    }
+
+    function triggerConfettiBurst() {
+      for (let i = 0; i < 20; i++) {
+        setTimeout(spawnParticle, i * 60);
+      }
+    }
+  </script>
+</body>
+</html>
