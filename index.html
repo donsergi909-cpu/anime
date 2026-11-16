@@ -19,7 +19,6 @@
       padding: 20px 10px;
     }
 
-    /* Ambient animated bubbles / hearts */
     .ambient-bg {
       position: fixed;
       top: 0; left: 0;
@@ -45,7 +44,6 @@
       100% { transform: translateY(-115vh) scale(1.2) rotate(360deg); opacity: 0; }
     }
 
-    /* Main Card */
     .card {
       position: relative;
       z-index: 1;
@@ -67,7 +65,6 @@
       100% { transform: scale(1) translateY(0); opacity: 1; }
     }
 
-    /* Avatar styling */
     .avatar-wrapper {
       position: relative;
       width: 110px;
@@ -133,7 +130,6 @@
       50% { opacity: 0.3; transform: scale(0.6); }
     }
 
-    /* Titles */
     .username-row {
       display: inline-flex;
       align-items: center;
@@ -161,7 +157,6 @@
       font-weight: 500;
     }
 
-    /* Counter Display Box */
     .counter-card {
       background: linear-gradient(180deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.02) 100%);
       border: 1px solid rgba(255, 255, 255, 0.12);
@@ -221,7 +216,6 @@
       gap: 12px;
     }
 
-    /* Quick Control Buttons */
     .controls {
       display: flex;
       justify-content: center;
@@ -252,7 +246,6 @@
       box-shadow: 0 0 12px rgba(225,48,108,0.5);
     }
 
-    /* Stats Grid */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -279,7 +272,6 @@
       margin-top: 3px;
     }
 
-    /* Joke ticker phrase */
     .joke-box {
       background: rgba(255, 255, 255, 0.08);
       border-left: 3px solid #ff0077;
@@ -295,7 +287,6 @@
       transition: opacity 0.3s;
     }
 
-    /* Main Follow CTA Button */
     .cta-btn {
       display: flex;
       align-items: center;
@@ -331,7 +322,6 @@
       margin-top: 18px;
     }
 
-    /* Milestone toast popup */
     #milestoneToast {
       position: fixed;
       top: 24px;
@@ -356,22 +346,229 @@
     #milestoneToast.show {
       transform: translateX(-50%) translateY(0);
     }
+
+    /* ===== WEATHER WIDGET ===== */
+    .weather-widget {
+      background: linear-gradient(135deg, rgba(30, 60, 120, 0.55) 0%, rgba(60, 20, 90, 0.55) 100%);
+      border: 1px solid rgba(100, 160, 255, 0.25);
+      border-radius: 22px;
+      padding: 18px 20px;
+      margin: 0 0 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      position: relative;
+      overflow: hidden;
+      animation: popIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+    }
+
+    .weather-widget::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 120px; height: 120px;
+      background: radial-gradient(circle, rgba(100,180,255,0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .weather-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .weather-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.8px;
+      color: rgba(150, 200, 255, 0.85);
+    }
+
+    .weather-location {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.5);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .weather-main {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .weather-icon-big {
+      font-size: 3.2rem;
+      line-height: 1;
+      filter: drop-shadow(0 0 12px rgba(100,180,255,0.4));
+      flex-shrink: 0;
+    }
+
+    .weather-temp-block {
+      text-align: left;
+      flex: 1;
+    }
+
+    .weather-temp {
+      font-size: 2.8rem;
+      font-weight: 900;
+      letter-spacing: -1px;
+      line-height: 1;
+      color: #fff;
+      text-shadow: 0 0 20px rgba(100,180,255,0.4);
+    }
+
+    .weather-feels {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.55);
+      margin-top: 2px;
+    }
+
+    .weather-desc {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: rgba(200, 230, 255, 0.9);
+      margin-top: 4px;
+      text-transform: capitalize;
+    }
+
+    .weather-details {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .weather-detail-item {
+      background: rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px;
+      padding: 8px 6px;
+      text-align: center;
+    }
+
+    .weather-detail-icon {
+      font-size: 1.1rem;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .weather-detail-val {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .weather-detail-label {
+      font-size: 0.63rem;
+      color: rgba(255,255,255,0.5);
+      margin-top: 1px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .weather-forecast {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .forecast-day {
+      background: rgba(0,0,0,0.15);
+      border-radius: 10px;
+      padding: 7px 4px;
+      text-align: center;
+    }
+
+    .forecast-day-name {
+      font-size: 0.63rem;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .forecast-icon {
+      font-size: 1.3rem;
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .forecast-temp-high {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .forecast-temp-low {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.45);
+    }
+
+    .weather-loading {
+      text-align: center;
+      padding: 20px;
+      color: rgba(255,255,255,0.5);
+      font-size: 0.85rem;
+    }
+
+    .weather-error {
+      text-align: center;
+      padding: 12px;
+      color: rgba(255,180,180,0.8);
+      font-size: 0.8rem;
+    }
+
+    .weather-city-select {
+      display: flex;
+      gap: 6px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .city-btn {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.75);
+      padding: 4px 11px;
+      border-radius: 12px;
+      font-size: 0.72rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .city-btn:hover, .city-btn.active {
+      background: rgba(100,160,255,0.25);
+      border-color: rgba(100,160,255,0.5);
+      color: #fff;
+    }
+
+    @keyframes weatherSpin {
+      to { transform: rotate(360deg); }
+    }
+    .weather-spinner {
+      display: inline-block;
+      animation: weatherSpin 1s linear infinite;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Floating particles background -->
   <div class="ambient-bg" id="particles"></div>
 
-  <!-- Toast notification -->
   <div id="milestoneToast">
     <span id="toastIcon">🎉</span>
     <span id="toastText">Новый рекорд!</span>
   </div>
 
-  <!-- Card -->
   <div class="card">
-    <!-- Avatar -->
     <div class="avatar-wrapper">
       <div class="avatar-ring">
         <img class="avatar-img" src="insta_logo.jpg" alt="@just.rs1706" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=200&auto=format&fit=crop&q=80'" />
@@ -381,25 +578,20 @@
       </div>
     </div>
 
-    <!-- Account Details -->
     <div class="username-row">
       <span class="username">@just.rs1706</span>
-      <!-- Instagram Verified SVG Badge -->
       <svg class="verified-icon" viewBox="0 0 24 24">
         <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-1.9 14.7l-4.2-4.2 1.4-1.4 2.8 2.8 6.8-6.8 1.4 1.4-8.2 8.2z"/>
       </svg>
     </div>
     <div class="tagline">🔥 Самый стремительно растущий блог в Instagram!</div>
 
-    <!-- Main Live Counter Box -->
     <div class="counter-card">
       <div class="counter-top">
         <span class="counter-label">ПОДПИСЧИКИ</span>
         <span class="speed-badge" id="speedTag">🚀 +2.4 / сек</span>
       </div>
-      
       <div id="counter">1,337</div>
-
       <div class="growth-info">
         <span>⏱ Обновление в реальном времени</span>
         <span>•</span>
@@ -407,7 +599,6 @@
       </div>
     </div>
 
-    <!-- Speed Controls (Interactive Humor) -->
     <div class="controls">
       <button class="control-btn active" onclick="setMode('normal', this)">Нормальный</button>
       <button class="control-btn" onclick="setMode('hype', this)">🔥 Турбо-Хайп</button>
@@ -415,7 +606,6 @@
       <button class="control-btn" onclick="addOne()">+1 Подписка</button>
     </div>
 
-    <!-- Extra Stats Grid -->
     <div class="stats-grid">
       <div class="stat-tile">
         <div class="stat-num" id="statPosts">84</div>
@@ -431,12 +621,30 @@
       </div>
     </div>
 
-    <!-- Joke Quotes / Status -->
     <div class="joke-box" id="jokeBox">
       ⚡ Марк Цукерберг лично проверяет серверы из-за наплыва подписчиков к @just.rs1706!
     </div>
 
-    <!-- Instagram Direct Link Button -->
+    <!-- ===== WEATHER WIDGET ===== -->
+    <div class="weather-widget" id="weatherWidget">
+      <div class="weather-header">
+        <span class="weather-title">🌤 Погода сейчас</span>
+        <span class="weather-location">📍 <span id="weatherCity">определяю...</span></span>
+      </div>
+      <div id="weatherContent">
+        <div class="weather-loading">
+          <span class="weather-spinner">🌀</span> Загружаю погоду...
+        </div>
+      </div>
+      <div class="weather-city-select" id="citySelect">
+        <button class="city-btn" onclick="loadWeather('Tashkent')">🇺🇿 Ташкент</button>
+        <button class="city-btn" onclick="loadWeather('Moscow')">🇷🇺 Москва</button>
+        <button class="city-btn" onclick="loadWeather('Almaty')">🇰🇿 Алматы</button>
+        <button class="city-btn" onclick="loadWeather('Istanbul')">🇹🇷 Стамбул</button>
+        <button class="city-btn" onclick="loadWeather('Dubai')">🇦🇪 Дубай</button>
+      </div>
+    </div>
+
     <a href="https://www.instagram.com/just.rs1706?stkn=MTk1MXNxZzBqc3VoYQ==" target="_blank" class="cta-btn">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
         <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
@@ -450,7 +658,7 @@
   </div>
 
   <script>
-    // Config state
+    // ===== INSTAGRAM COUNTER LOGIC =====
     let count = 2840;
     let baseRate = 1.8;
     let modeRateMultiplier = 1.0;
@@ -474,12 +682,10 @@
     const statLikesEl = document.getElementById("statLikes");
     const statReachEl = document.getElementById("statReach");
 
-    // Number format with commas
     function formatNumber(num) {
       return Math.floor(num).toLocaleString('ru-RU');
     }
 
-    // Milestones definition
     const milestones = [
       { at: 3000, text: "🎉 3 000 подписчиков взято! Полёт отличный!" },
       { at: 5000, text: "⭐ 5 000 легенд вместе с @just.rs1706!" },
@@ -506,7 +712,6 @@
       setTimeout(() => toast.classList.remove("show"), 3800);
     }
 
-    // Mode changer
     function setMode(mode, btn) {
       document.querySelectorAll('.control-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
@@ -533,36 +738,29 @@
       counterEl.textContent = formatNumber(count);
       const currentRate = (baseRate * modeRateMultiplier).toFixed(1);
       speedTagEl.textContent = `🚀 +${currentRate} / сек`;
-      
       const gainedToday = Math.floor(todayStart + (count - 2840) * 4);
       todayGainEl.textContent = `За сегодня: +${formatNumber(gainedToday)}`;
-
       statLikesEl.textContent = formatNumber(count * 8.4);
       statReachEl.textContent = formatNumber(count * 24.6);
     }
 
-    // Main animation loop
     let lastTime = performance.now();
     function loop(time) {
       const dt = (time - lastTime) / 1000;
       lastTime = time;
-
       const delta = (baseRate * modeRateMultiplier + (Math.random() - 0.4) * 0.5) * dt;
       const prevInt = Math.floor(count);
       count += Math.max(0.1 * dt, delta);
       const newInt = Math.floor(count);
-
       if (newInt !== prevInt) {
         bumpCounter();
         checkMilestone(newInt);
       }
-
       updateDisplay();
       requestAnimationFrame(loop);
     }
     requestAnimationFrame(loop);
 
-    // Joke phrase rotator
     setInterval(() => {
       jokeEl.style.opacity = 0;
       setTimeout(() => {
@@ -572,7 +770,6 @@
       }, 350);
     }, 4500);
 
-    // Floating particles generator
     const particlesContainer = document.getElementById("particles");
     const symbols = ['❤️', '🔥', '✨', '⚡', '🌟', '💖', '👏', '🎯', '📸'];
 
@@ -585,7 +782,6 @@
       p.style.animationDuration = duration + "s";
       p.style.fontSize = (1 + Math.random() * 1.5) + "rem";
       particlesContainer.appendChild(p);
-
       setTimeout(() => p.remove(), duration * 1000);
     }
 
@@ -611,6 +807,184 @@
         setTimeout(spawnParticle, i * 60);
       }
     }
+
+    // ===== WEATHER WIDGET =====
+
+    const WMO_CODES = {
+      0:  { icon: '☀️',  desc: 'ясно' },
+      1:  { icon: '🌤',  desc: 'преимущественно ясно' },
+      2:  { icon: '⛅',  desc: 'переменная облачность' },
+      3:  { icon: '☁️',  desc: 'пасмурно' },
+      45: { icon: '🌫',  desc: 'туман' },
+      48: { icon: '🌫',  desc: 'туман с изморозью' },
+      51: { icon: '🌦',  desc: 'лёгкая морось' },
+      53: { icon: '🌦',  desc: 'морось' },
+      55: { icon: '🌦',  desc: 'сильная морось' },
+      61: { icon: '🌧',  desc: 'небольшой дождь' },
+      63: { icon: '🌧',  desc: 'дождь' },
+      65: { icon: '🌧',  desc: 'сильный дождь' },
+      71: { icon: '🌨',  desc: 'небольшой снег' },
+      73: { icon: '❄️',  desc: 'снег' },
+      75: { icon: '❄️',  desc: 'сильный снег' },
+      77: { icon: '🌨',  desc: 'снежная крупа' },
+      80: { icon: '🌦',  desc: 'ливень' },
+      81: { icon: '🌧',  desc: 'ливень умеренный' },
+      82: { icon: '⛈',  desc: 'сильный ливень' },
+      85: { icon: '🌨',  desc: 'снегопад' },
+      86: { icon: '❄️',  desc: 'сильный снегопад' },
+      95: { icon: '⛈',  desc: 'гроза' },
+      96: { icon: '⛈',  desc: 'гроза с градом' },
+      99: { icon: '⛈',  desc: 'гроза с сильным градом' },
+    };
+
+    function getWMO(code) {
+      return WMO_CODES[code] || { icon: '🌡', desc: 'неизвестно' };
+    }
+
+    const CITIES = {
+      'Tashkent':  { lat: 41.30, lon: 69.24, name: 'Ташкент' },
+      'Moscow':    { lat: 55.75, lon: 37.62, name: 'Москва' },
+      'Almaty':    { lat: 43.24, lon: 76.89, name: 'Алматы' },
+      'Istanbul':  { lat: 41.01, lon: 28.95, name: 'Стамбул' },
+      'Dubai':     { lat: 25.20, lon: 55.27, name: 'Дубай' },
+    };
+
+    let currentCity = null;
+
+    function getDayName(dateStr, index) {
+      if (index === 0) return 'Сег';
+      const days = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
+      const d = new Date(dateStr);
+      return days[d.getDay()];
+    }
+
+    function renderWeather(data, cityName) {
+      const cur = data.current;
+      const daily = data.daily;
+      const wmo = getWMO(cur.weather_code);
+      const feelsLike = cur.apparent_temperature !== undefined ? Math.round(cur.apparent_temperature) : '—';
+      const humidity = cur.relative_humidity_2m !== undefined ? cur.relative_humidity_2m : '—';
+      const wind = cur.wind_speed_10m !== undefined ? Math.round(cur.wind_speed_10m) : '—';
+      const pressure = cur.pressure_msl !== undefined ? Math.round(cur.pressure_msl) : '—';
+
+      let forecastHTML = '';
+      const forecastDays = Math.min(5, daily.time.length);
+      for (let i = 0; i < forecastDays; i++) {
+        const fw = getWMO(daily.weather_code[i]);
+        forecastHTML += `
+          <div class="forecast-day">
+            <div class="forecast-day-name">${getDayName(daily.time[i], i)}</div>
+            <span class="forecast-icon">${fw.icon}</span>
+            <div class="forecast-temp-high">${Math.round(daily.temperature_2m_max[i])}°</div>
+            <div class="forecast-temp-low">${Math.round(daily.temperature_2m_min[i])}°</div>
+          </div>`;
+      }
+
+      document.getElementById('weatherContent').innerHTML = `
+        <div class="weather-main">
+          <div class="weather-icon-big">${wmo.icon}</div>
+          <div class="weather-temp-block">
+            <div class="weather-temp">${Math.round(cur.temperature_2m)}°C</div>
+            <div class="weather-desc">${wmo.desc}</div>
+            <div class="weather-feels">ощущается как ${feelsLike}°C</div>
+          </div>
+        </div>
+        <div class="weather-details">
+          <div class="weather-detail-item">
+            <span class="weather-detail-icon">💧</span>
+            <div class="weather-detail-val">${humidity}%</div>
+            <div class="weather-detail-label">Влажность</div>
+          </div>
+          <div class="weather-detail-item">
+            <span class="weather-detail-icon">💨</span>
+            <div class="weather-detail-val">${wind} км/ч</div>
+            <div class="weather-detail-label">Ветер</div>
+          </div>
+          <div class="weather-detail-item">
+            <span class="weather-detail-icon">🔵</span>
+            <div class="weather-detail-val">${pressure} гПа</div>
+            <div class="weather-detail-label">Давление</div>
+          </div>
+        </div>
+        <div class="weather-forecast">
+          ${forecastHTML}
+        </div>
+      `;
+
+      document.getElementById('weatherCity').textContent = cityName;
+      document.querySelectorAll('.city-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.includes(cityName));
+      });
+    }
+
+    async function loadWeather(cityKey) {
+      const city = CITIES[cityKey];
+      if (!city) return;
+      currentCity = cityKey;
+
+      document.getElementById('weatherContent').innerHTML =
+        `<div class="weather-loading"><span class="weather-spinner">🌀</span> Загружаю погоду...</div>`;
+      document.getElementById('weatherCity').textContent = city.name;
+
+      const url = `https://api.open-meteo.com/v1/forecast?` +
+        `latitude=${city.lat}&longitude=${city.lon}` +
+        `&current=temperature_2m,apparent_temperature,weather_code,relative_humidity_2m,wind_speed_10m,pressure_msl` +
+        `&daily=weather_code,temperature_2m_max,temperature_2m_min` +
+        `&timezone=auto&forecast_days=5`;
+
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('API error');
+        const data = await res.json();
+        renderWeather(data, city.name);
+      } catch (e) {
+        document.getElementById('weatherContent').innerHTML =
+          `<div class="weather-error">⚠️ Не удалось загрузить погоду.<br>Проверьте соединение.</div>`;
+      }
+    }
+
+    function initWeather() {
+      if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          async (pos) => {
+            const { latitude: lat, longitude: lon } = pos.coords;
+            try {
+              const geoRes = await fetch(
+                `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`,
+                { headers: { 'Accept-Language': 'ru' } }
+              );
+              const geoData = await geoRes.json();
+              const cityName = geoData.address?.city ||
+                               geoData.address?.town ||
+                               geoData.address?.village ||
+                               geoData.address?.county ||
+                               'Ваш город';
+
+              const url = `https://api.open-meteo.com/v1/forecast?` +
+                `latitude=${lat}&longitude=${lon}` +
+                `&current=temperature_2m,apparent_temperature,weather_code,relative_humidity_2m,wind_speed_10m,pressure_msl` +
+                `&daily=weather_code,temperature_2m_max,temperature_2m_min` +
+                `&timezone=auto&forecast_days=5`;
+              const res = await fetch(url);
+              const data = await res.json();
+              renderWeather(data, cityName);
+            } catch {
+              loadWeather('Tashkent');
+            }
+          },
+          () => loadWeather('Tashkent'),
+          { timeout: 5000 }
+        );
+      } else {
+        loadWeather('Tashkent');
+      }
+    }
+
+    initWeather();
+    setInterval(() => {
+      if (currentCity) loadWeather(currentCity);
+      else initWeather();
+    }, 10 * 60 * 1000);
   </script>
 </body>
 </html>
